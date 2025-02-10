@@ -10,6 +10,7 @@ import UIKit
 class PopularListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var ViewModel : PopularListViewModel!
+    let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,11 +18,22 @@ class PopularListViewController: UIViewController {
         tableView.delegate = self
         ViewModel = PopularListViewModel()
         ViewModel.delegate = self
+        ViewModel.networkManager = NetworkManager()
+        ViewModel.fetchData()
+        tableView.tableFooterView = activityIndicator
+        activityIndicator.startAnimating()
     }
     
 
 }
 extension PopularListViewController : PopularListDelegate{
+    func didReceiveResponse() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+        }
+    }
+
     
 }
 extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
@@ -40,6 +52,13 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
                 department: ViewModel.popularpeople?[indexPath.row].department ?? "department"
             )
         return cell
+    }
+    func tableView(_ tableView: UITableView,willDisplay cell: UITableViewCell,forRowAt indexPath: IndexPath) {
+        if indexPath.row == (ViewModel.popularpeople?.count ?? 1)-2{
+            activityIndicator.startAnimating()
+            ViewModel.fetchData()
+            
+        }
     }
     
 }

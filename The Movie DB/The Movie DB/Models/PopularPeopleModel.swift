@@ -8,11 +8,11 @@
 import Foundation
 
 struct PopularPeopleModel : Decodable{
-    var id : Int
+    var id : Float
     var name : String
     var originalName : String
     var department : String
-    var profilePath : String
+    var profilePath : String?
     
     enum CodingKeys : String,CodingKey{
         case id = "id"

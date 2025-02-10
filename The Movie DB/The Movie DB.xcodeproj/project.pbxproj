@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5D2EC1952D59A21A008207B5 /* Exceptions for "The Movie DB" folder in "The Movie DB" target */ = {
+		5D2EC2282D59CB95008207B5 /* Exceptions for "The Movie DB" folder in "The Movie DB" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -21,10 +21,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5D2EC1852D59A219008207B5 /* The Movie DB */ = {
+		5D2EC21D2D59CB95008207B5 /* The Movie DB */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				5D2EC1952D59A21A008207B5 /* Exceptions for "The Movie DB" folder in "The Movie DB" target */,
+				5D2EC2282D59CB95008207B5 /* Exceptions for "The Movie DB" folder in "The Movie DB" target */,
 			);
 			path = "The Movie DB";
 			sourceTree = "<group>";
@@ -45,7 +45,7 @@
 		5D2EC17A2D59A219008207B5 = {
 			isa = PBXGroup;
 			children = (
-				5D2EC1852D59A219008207B5 /* The Movie DB */,
+				5D2EC21D2D59CB95008207B5 /* The Movie DB */,
 				5D2EC1842D59A219008207B5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5D2EC1852D59A219008207B5 /* The Movie DB */,
+				5D2EC21D2D59CB95008207B5 /* The Movie DB */,
 			);
 			name = "The Movie DB";
 			packageProductDependencies = (
