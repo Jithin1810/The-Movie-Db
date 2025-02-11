@@ -12,6 +12,7 @@ class PopularListTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var departmentLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
+    @IBOutlet weak var popularityLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,9 +22,15 @@ class PopularListTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    func configure(name: String,department:String,imageString:String){
+    func configure(
+        name: String,
+        department:String,
+        imageString:String,
+        popularity : Float
+    ){
         self.nameLabel.text = name
-        self.departmentLabel.text = department
+        self.departmentLabel.text = "Department: \(department)"
+        self.popularityLabel.text = "Popularity : \(String(popularity))"
         let baseurl = "https://image.tmdb.org/t/p/w500"
         if imageString == ""{
             self.posterImageView.image = UIImage(named: "defaultphoto")

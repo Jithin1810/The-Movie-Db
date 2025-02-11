@@ -50,7 +50,8 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
             .configure(
                 name: model.name,
                 department: model.department,
-                imageString: model.profilePath ?? ""
+                imageString: model.profilePath ?? "",
+                popularity: model.popularity
             )
         return cell
     }
@@ -67,6 +68,17 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
         }else{
             return "Showing Search List"
         }
+    }
+    func tableView(_ tableView: UITableView,didSelectRowAt indexPath: IndexPath
+    ) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        guard let detailsVc = storyBoard.instantiateViewController(withIdentifier: "PeopleDetailViewController") as? PeopleDetailViewController else {
+            return
+        }
+        detailsVc.selectedPerson = ViewModel.modelAt(indexPath)
+        detailsVc.networkManager = NetworkManager()
+        self.navigationController?
+            .pushViewController(detailsVc, animated: true)
     }
 }
 
