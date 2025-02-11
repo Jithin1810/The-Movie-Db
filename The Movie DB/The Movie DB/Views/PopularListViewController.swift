@@ -49,7 +49,8 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
         cell
             .configure(
                 name: ViewModel.popularpeople?[indexPath.row].name ?? "name",
-                department: ViewModel.popularpeople?[indexPath.row].department ?? "department"
+                department: ViewModel.popularpeople?[indexPath.row].department ?? "department",
+                imageString: ViewModel.popularpeople?[indexPath.row].profilePath ?? ""
             )
         return cell
     }

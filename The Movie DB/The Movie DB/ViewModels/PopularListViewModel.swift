@@ -32,7 +32,9 @@ class PopularListViewModel{
                         if self.popularpeople != nil{
                             self.popularpeople?.append(contentsOf: response.results)
                         }else{
-                            self.popularpeople = response.results
+                            DispatchQueue.main.async {
+                                self.popularpeople = response.results
+                            }
                         }
                         self.delegate?.didReceiveResponse()
                     }
