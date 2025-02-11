@@ -10,18 +10,23 @@ import SDWebImage
 
 class ImagesCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        imageView.layer.cornerRadius = 8
+    }
+    
     func configure(imageString: String){
-        let baseurl = "https://image.tmdb.org/t/p/w500"
-        if imageString == ""{
-            self.imageView.image = UIImage(named: "defaultphoto")
-        }else{
-            let fullUrl = baseurl+imageString
-            let imageURL = URL(string: fullUrl)
-            self.imageView
-                .sd_setImage(
-                    with: imageURL,
-                    placeholderImage: UIImage(named: "placeholder")
-                )
-        }
+        let imageURL = URL(string: imageString)
+        self.imageView
+            .sd_setImage(
+                with: imageURL,
+                placeholderImage: UIImage(named: "placeholder")
+            )
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
     }
 }

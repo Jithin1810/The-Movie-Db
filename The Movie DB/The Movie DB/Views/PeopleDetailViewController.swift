@@ -25,18 +25,20 @@ class PeopleDetailViewController: UIViewController {
         super.viewDidLoad()
         knownForCollectionView.dataSource = self
         imagesCollectionView.dataSource = self
+        imagesCollectionView.delegate = self
+        knownForCollectionView.delegate = self
         setUp()
         getImages()
         
     }
 
 }
-extension PeopleDetailViewController : UICollectionViewDataSource{
+extension PeopleDetailViewController : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == knownForCollectionView{
-            return selectedPerson?.knownFor.count ?? 0
+            return selectedPerson?.knownFor.count ?? 1
         }else{
-            return selectedPersonImages?.count ?? 0
+            return selectedPersonImages?.count ?? 1
         }
     }
 
@@ -46,28 +48,32 @@ extension PeopleDetailViewController : UICollectionViewDataSource{
                 withReuseIdentifier: "knownForCollectionCell",
                 for: indexPath
             ) as! KnownForCollectionViewCell
-            cell
-                .configure(
-                    imageString: selectedPerson?
-                        .knownFor[indexPath.row].posterPath  ?? ""
-                )
+            let url = ImageURLBuilder.getUrl(with: selectedPerson?
+                .knownFor[indexPath.row].posterPath  ?? "")
+            cell.configure(imageString: url)
             return cell
-        }else{
+        } else {
             let cell = imagesCollectionView.dequeueReusableCell(
                 withReuseIdentifier: "imageCollectionCell",
                 for: indexPath
             ) as! ImagesCollectionViewCell
-            cell
-                .configure(
-                    imageString: selectedPersonImages?[indexPath.row].filepath ?? ""
-                )
+            let url = ImageURLBuilder.getUrl(with: selectedPersonImages?[indexPath.row].filepath ?? "")
+            cell.configure(imageString: url)
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(
+            width: self.view.frame.width/3,
+            height: collectionView.bounds.height
+        )
     }
 }
 
 extension PeopleDetailViewController{
     func setUp(){
+        navigationItem.largeTitleDisplayMode = .never
         nameLabel.text = "Name - \(selectedPerson?.name ?? "")"
         originalNmaeLabel.text = "Original Name - \(selectedPerson?.originalName ?? "")"
         if selectedPerson?.gender == 1{
@@ -79,7 +85,7 @@ extension PeopleDetailViewController{
         popularityLabel.text = "Popularity - \(selectedPerson?.popularity ?? 0.0)"
         let baseurl = "https://image.tmdb.org/t/p/w500"
         let imageString = selectedPerson?.profilePath
-        if imageString == ""{
+        if imageString == nil{
             self.displayImageView.image = UIImage(named: "defaultphoto")
         }else{
             let fullUrl = baseurl+(imageString ?? "")
@@ -105,6 +111,7 @@ extension PeopleDetailViewController{
                         DispatchQueue.main.async {
                             self.selectedPersonImages = response.profiles
                             self.imagesCollectionView.reloadData()
+                            self.knownForCollectionView.reloadData()
                         }
                     }
                 })

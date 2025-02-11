@@ -23,6 +23,10 @@ class PopularListViewController: UIViewController {
         ViewModel.fetchData()
         tableView.tableFooterView = activityIndicator
         activityIndicator.startAnimating()
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardPicker))
+        gesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(gesture)
+        tableView.keyboardDismissMode = .onDrag
     }
     
 
@@ -45,12 +49,12 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
             withIdentifier: "PopularpeopleCell",
             for: indexPath
         ) as? PopularListTableViewCell, let model = ViewModel.modelAt(indexPath) else{return UITableViewCell()}
-        
+        let url = ImageURLBuilder.getUrl(with: model.profilePath ?? "")
         cell
             .configure(
                 name: model.name,
                 department: model.department,
-                imageString: model.profilePath ?? "",
+                imageString: url,
                 popularity: model.popularity
             )
         return cell
@@ -79,6 +83,7 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
         detailsVc.networkManager = NetworkManager()
         self.navigationController?
             .pushViewController(detailsVc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -108,5 +113,10 @@ extension PopularListViewController : UISearchBarDelegate{
         }else{
             ViewModel.fetchSearchData()
         }
+    }
+}
+extension PopularListViewController{
+    @objc func dismissKeyboardPicker(){
+        view.endEditing(true)
     }
 }

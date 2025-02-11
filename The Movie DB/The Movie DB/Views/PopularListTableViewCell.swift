@@ -18,7 +18,7 @@ class PopularListTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
@@ -31,14 +31,8 @@ class PopularListTableViewCell: UITableViewCell {
         self.nameLabel.text = name
         self.departmentLabel.text = "Department: \(department)"
         self.popularityLabel.text = "Popularity : \(String(popularity))"
-        let baseurl = "https://image.tmdb.org/t/p/w500"
-        if imageString == ""{
-            self.posterImageView.image = UIImage(named: "defaultphoto")
-        }else{
-            let fullUrl = baseurl+imageString
-            let imageURL = URL(string: fullUrl)
-            self.posterImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "placeholder"))
-        }
+        let imageURL = URL(string: imageString)
+        self.posterImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "placeholder"))
     }
-
+    
 }
