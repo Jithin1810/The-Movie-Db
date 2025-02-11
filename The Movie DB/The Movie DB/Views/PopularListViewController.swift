@@ -11,6 +11,7 @@ class PopularListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var ViewModel : PopularListViewModel!
     let activityIndicator = UIActivityIndicatorView(style: .medium)
+    private var debounceTimer : Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,24 +34,23 @@ extension PopularListViewController : PopularListDelegate{
             self.activityIndicator.stopAnimating()
         }
     }
-
-    
 }
 extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        ViewModel.popularpeople?.count ?? 1
+        ViewModel.numberOfRows()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
+        guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "PopularpeopleCell",
             for: indexPath
-        ) as! PopularListTableViewCell
+        ) as? PopularListTableViewCell, let model = ViewModel.modelAt(indexPath) else{return UITableViewCell()}
+        
         cell
             .configure(
-                name: ViewModel.popularpeople?[indexPath.row].name ?? "name",
-                department: ViewModel.popularpeople?[indexPath.row].department ?? "department",
-                imageString: ViewModel.popularpeople?[indexPath.row].profilePath ?? ""
+                name: model.name,
+                department: model.department,
+                imageString: model.profilePath ?? ""
             )
         return cell
     }
@@ -61,5 +61,40 @@ extension PopularListViewController : UITableViewDataSource,UITableViewDelegate{
             
         }
     }
-    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if ViewModel.searchText == ""{
+            return "Popular People List"
+        }else{
+            return "Showing Search List"
+        }
+    }
+}
+
+extension PopularListViewController : UISearchBarDelegate{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == ""{
+            ViewModel.searchText = ""
+            tableView.reloadData()
+        }
+        ViewModel.searchText = searchText
+    }
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        debounceTimer?.invalidate()
+        debounceTimer = Timer
+            .scheduledTimer(
+                timeInterval: 0.5,
+                target: self,
+                selector: #selector(search),
+                userInfo: nil,
+                repeats: false
+            )
+        return true
+    }
+    @objc func search(){
+        if ViewModel.searchText == "" {
+            tableView.reloadData()
+        }else{
+            ViewModel.fetchSearchData()
+        }
+    }
 }
