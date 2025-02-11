@@ -20,7 +20,7 @@ class KnownForCollectionViewCell: UICollectionViewCell {
         self.imageView
             .sd_setImage(
                 with: imageURL,
-                placeholderImage: UIImage(named: "placeholder")
+                placeholderImage: UIImage(named: "defaultphoto")
             )
     }
     

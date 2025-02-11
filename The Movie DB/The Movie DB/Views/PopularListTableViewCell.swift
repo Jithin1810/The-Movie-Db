@@ -32,7 +32,7 @@ class PopularListTableViewCell: UITableViewCell {
         self.departmentLabel.text = "Department: \(department)"
         self.popularityLabel.text = "Popularity : \(String(popularity))"
         let imageURL = URL(string: imageString)
-        self.posterImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "placeholder"))
+        self.posterImageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "defaultphoto"))
     }
     
 }
